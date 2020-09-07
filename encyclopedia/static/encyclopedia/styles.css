@@ -36,3 +36,12 @@ textarea {
 .sidebar h2 {
     margin-top: 5px;
 }
+
+#new_page{
+    display: flex;
+    flex-direction: column;
+}
+
+#new_page input{
+    width: 200px;
+}

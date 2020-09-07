@@ -5,12 +5,11 @@ Encyclopedia
 {% endblock %}
 
 {% block body %}
-<h1>{{ title }}</h1>
 
 {% if entry == None %}
 <h3>Error. Page not found</h3>
 {% else %}
-{{ entry }}
+{{ entry |safe}}
 {% endif %}
 
 {% endblock %}
