@@ -12,11 +12,11 @@ h1 {
     padding-top: 20px;
 }
 
-textarea {
+/*textarea {
     height: 90vh;
     width: 80%;
 }
-
+*/
 .main {
     padding: 10px;
 }
@@ -44,4 +44,9 @@ textarea {
 
 #new_page input{
     width: 200px;
+}
+
+#id_entryContent{
+    height:50vh!important;
+    color: red!important;
 }

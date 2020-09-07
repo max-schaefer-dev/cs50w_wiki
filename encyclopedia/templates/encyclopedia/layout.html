@@ -19,13 +19,13 @@
                 <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
             </form>
             <div>
-                <a href="{% url 'index' %}">Home</a>
+                <a href="{% url 'wiki:index' %}">Home</a>
             </div>
             <div>
-                <a href="new_page">Create New Page</a>
+                <a href="{% url 'wiki:new-entry' %}">Create New Page</a>
             </div>
             <div>
-                Random Page
+                <a href="{% url 'wiki:random-entry' %}">Random Page</a>
             </div>
             {% block nav %}
             {% endblock %}
