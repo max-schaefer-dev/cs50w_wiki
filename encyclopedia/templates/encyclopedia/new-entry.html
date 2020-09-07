@@ -5,11 +5,15 @@ Encyclopedia
 {% endblock %}
 
 {% block body %}
+{% if error %}
+<h1>{{ error }}</h1>
+{% elif form %}
 <h1>Create new page</h1>
 <form id="new_page" action="{% url 'wiki:new-entry' %}" name="new_page" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Create Entry">
 </form>
+{% endif %}
 
 {% endblock %}
