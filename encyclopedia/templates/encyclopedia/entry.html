@@ -7,9 +7,13 @@ Encyclopedia
 {% block body %}
 
 {% if entry == None %}
-<h3>Error. Page not found</h3>
+<h1>Entry couldn´t be found:</h1>
+<h3>Try using our search tool</h3>
 {% else %}
 {{ entry |safe}}
+<form class="edit-btn" method="post">
+    {% csrf_token %}
+    <button name="editTitle" type="submit" value="{{ entry }}">Edit entry</button>
+</form>
 {% endif %}
-
 {% endblock %}

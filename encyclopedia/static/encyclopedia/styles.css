@@ -48,5 +48,9 @@ h1 {
 
 #id_entryContent{
     height:50vh!important;
-    color: red!important;
+    width: 70%;
+}
+
+#id_entryTitel{
+    margin-bottom:20px;
 }

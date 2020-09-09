@@ -5,14 +5,25 @@ Encyclopedia
 {% endblock %}
 
 {% block body %}
+<!-- Error if entry couldn´t be created -->
 {% if error %}
-<h1>{{ error }}</h1>
+<h1>Entry couldn´t be created:</h1>
+<h3>{{ error }}</h3>
+<!-- If entry gets edited. Prepopulated form -->
+{% elif editForm %}
+<h1>Editing page</h1>
+<form id="new_page" action="{% url 'wiki:new-entry' %}" name="new_page" method="post">
+    {% csrf_token %}
+    {{ editForm }}
+    <input type="submit" value="Save changes" name="editedEntry">
+</form>
+<!-- If a new entry gets created. Blank form -->
 {% elif form %}
 <h1>Create new page</h1>
 <form id="new_page" action="{% url 'wiki:new-entry' %}" name="new_page" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Create Entry">
+    <input type="submit" value="Create Entry" name="newEntry">
 </form>
 {% endif %}
 

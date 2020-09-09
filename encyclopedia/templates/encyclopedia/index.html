@@ -9,7 +9,8 @@ Encyclopedia
 
 <ul>
     {% for entry in entries %}
-    <li><a href="wiki/{{ entry }}">{{ entry }}</a></li>
+    <!--    <li><a href="wiki/{{ entry }}">{{ entry }}</a></li> -->
+    <li><a href="{% url 'wiki:entry' entry %}">{{ entry }}</a></li>
     {% endfor %}
 </ul>
 

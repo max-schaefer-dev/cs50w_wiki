@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 import markdown2
+import html2markdown
 import random
 import re
 
@@ -33,25 +36,41 @@ def index(request):
 
 def entry(request, title):
     if request.method == "POST":
-        search = request.POST.__getitem__("q")
-        results = []
-        for entry in util.list_entries():
-            if search.upper() == entry.upper():
-                return redirect(f'/wiki/{ search }')
-            mat = re.search(f'{ search.upper() }', entry.upper())
-            if mat:
-                results.append(entry)
-        return render(request, "encyclopedia/search-result.html", {
-            "results": results
-        })
+        """ triggers if a search function has been used"""
+        if request.POST.__contains__("q"):
+            search = request.POST.__getitem__("q")
+            results = []
+            for entry in util.list_entries():
+                if search.upper() == entry.upper():
+                    return redirect(f'/wiki/{ search }')
+                mat = re.search(f'{ search.upper() }', entry.upper())
+                if mat:
+                    results.append(entry)
+            return render(request, "encyclopedia/search-result.html", {
+                "results": results
+            })
+        elif request.POST.__contains__("editTitle"):
+            fullEntry = request.POST.__getitem__("editTitle")
+            eTitle = re.findall("^<h1>(\\S+)</h1>", fullEntry)
+            eContent = re.findall(
+                "^<h1>\\S+</h1>\\r\\n\\r\\n(.+)", fullEntry, flags=re.DOTALL)
+            editForm = NewEntryForm(
+                initial={
+                    'entryTitel': eTitle[0], 'entryContent': html2markdown.convert(eContent[0])}
+            )
+            return render(request, "encyclopedia/new-entry.html", {
+                "editForm": editForm
+            })
     return render(request, "encyclopedia/entry.html", {
-        "entry": markdown2.markdown(util.get_entry(title))
+        "entry": markdown2.markdown(util.get_entry(title)),
+        "title": title
     })
 
 
 def new_entry(request):
     if request.method == "POST":
-        if request.POST.__len__() == 3:
+        """ triggers if new entry has been saved """
+        if request.POST.__contains__("newEntry"):
             form = NewEntryForm(request.POST)
             if form.is_valid():
                 entryTitle = request.POST.__getitem__("entryTitel")
@@ -66,7 +85,19 @@ def new_entry(request):
                     f.write(f"#{entryTitle}\n\n{entryContent}")
                 return redirect(f"/wiki/{ entryTitle }")
 
-        elif request.POST.__len__() == 2:
+        """ triggers if an existing entry get´s has been edited"""
+        elif request.POST.__contains__("editedEntry"):
+            form = NewEntryForm(request.POST)
+            if form.is_valid():
+                entryTitle = request.POST.__getitem__("entryTitel")
+                entryContent = request.POST.__getitem__("entryContent")
+                md_file = f"entries\\{entryTitle}.md".format()
+                with open(md_file, 'w') as f:
+                    f.write(f"#{entryTitle}\n\n{entryContent}")
+                return redirect(f"/wiki/{ entryTitle }")
+
+        """ triggers if a search function has been used"""
+        elif request.POST.__contains__("q"):
             search = request.POST.__getitem__("q")
             results = []
             for entry in util.list_entries():
